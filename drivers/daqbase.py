@@ -1,31 +1,29 @@
 __author__ = 'Graham Voysey'
-import abc
-import six
+from abc import ABCMeta,abstractmethod
 
-@six.add_metaclass(abc.ABCMeta)
-class DAQBase(object):
-    @abc.abstractmethod
+class DAQBase(metaclass=ABCMeta):
+    @abstractmethod
     def start(self):
         """
 
         :return:
         """
 
-    @abc.abstractmethod
+    @abstractmethod
     def stop(self):
         """
 
         :return:
         """
 
-    @abc.abstractmethod
+    @abstractmethod
     def init(self):
         """
 
         :return:
         """
 
-    @abc.abstractmethod
+    @abstractmethod
     def open(self,address):
         """
 
@@ -33,14 +31,14 @@ class DAQBase(object):
         :return:
         """
 
-    @abc.abstractmethod
+    @abstractmethod
     def close(self):
         """
 
         :return:
         """
 
-    @abc.abstractmethod
+    @abstractmethod
     def get_data(self,samples):
         """
 

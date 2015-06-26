@@ -2,7 +2,7 @@ __author__ = 'Graham Voysey'
 
 from yapsy.PluginManager import PluginManager
 import logging
-#logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG)
 def main():
     # Load the plugins from the plugin directory.
     manager = PluginManager()
