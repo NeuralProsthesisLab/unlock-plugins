@@ -2,6 +2,8 @@ __author__ = 'Graham Voysey'
 
 from PyDAQmx import *
 import numpy
+from apps.drivers.daqpluginbase import DAQPluginBase
+
 
 analog_input = Task()
 read = int32()
