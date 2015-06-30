@@ -1,35 +1,33 @@
 __author__ = 'Graham Voysey'
 
-from abc import ABCMeta, abstractmethod, abstractproperty
 from yapsy import IPlugin
 
-class DAQPluginBase(metaclass=ABCMeta):
-    @abstractproperty
-    def name(self):
-        return None
+class DAQPluginBase(IPlugin):
 
-    @abstractmethod
+    name = ""
+
+
     def start(self):
         """
 
         :return:
         """
 
-    @abstractmethod
+
     def stop(self):
         """
 
         :return:
         """
 
-    @abstractmethod
+
     def init(self):
         """
 
         :return:
         """
 
-    @abstractmethod
+
     def open(self,address):
         """
 
@@ -37,14 +35,14 @@ class DAQPluginBase(metaclass=ABCMeta):
         :return:
         """
 
-    @abstractmethod
+
     def close(self):
         """
 
         :return:
         """
 
-    @abstractmethod
+
     def get_data(self,samples):
         """
 
