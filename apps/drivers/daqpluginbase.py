@@ -3,7 +3,7 @@ __author__ = 'Graham Voysey'
 from abc import ABCMeta, abstractmethod, abstractproperty
 from yapsy import IPlugin
 
-class DAQPluginBase(metaclass=ABCMeta, IPlugin):
+class DAQPluginBase(metaclass=ABCMeta):
     @abstractproperty
     def name(self):
         return None

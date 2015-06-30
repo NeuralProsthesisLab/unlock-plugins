@@ -1,0 +1,8 @@
+[Core]
+Name = Lab Streaming Layer
+Module = lsl
+
+[Documentation]
+Author = Graham Voysey
+Version = 0.1
+Description = Integrates LSL as a data source

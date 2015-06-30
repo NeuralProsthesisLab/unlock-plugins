@@ -1,6 +1,25 @@
 __author__ = 'Graham Voysey'
 from apps.drivers.daqpluginbase import DAQPluginBase
+from yapsy import IPlugin
 
+class LSL(DAQPluginBase, IPlugin):
+    def name(self):
+        return "Lab Streaming Layer"
 
-class LSL(DAQPluginBase):
-    pass
+    def get_data(self, samples):
+        pass
+
+    def stop(self):
+        pass
+
+    def start(self):
+        pass
+
+    def close(self):
+        pass
+
+    def init(self):
+        pass
+
+    def open(self, address):
+        pass
