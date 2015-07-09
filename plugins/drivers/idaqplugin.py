@@ -1,11 +1,15 @@
 __author__ = 'Graham Voysey'
 
 from yapsy import IPlugin
+import logging
+logging.getLogger('yaspy').setLevel(logging.DEBUG)
 
-class DAQPluginBase(IPlugin):
+class IDAQPlugin(IPlugin):
 
     name = ""
 
+    def __init__(self):
+        pass
 
     def start(self):
         """
