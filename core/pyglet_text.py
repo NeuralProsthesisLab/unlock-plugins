@@ -1,4 +1,4 @@
-from unlock2.core.unlockview import UnlockView
+from core.unlockview import UnlockView
 import pyglet
 import inspect
 import logging
