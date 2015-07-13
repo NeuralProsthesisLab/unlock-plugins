@@ -1,14 +1,15 @@
 __author__ = 'Graham Voysey'
 
-from yapsy import IPlugin
+from yapsy.IPlugin import IPlugin
 import logging
+
 logging.getLogger('yaspy').setLevel(logging.DEBUG)
 
-class IDAQPlugin(IPlugin):
 
+class IDAQPlugin(IPlugin):
     name = ""
 
-    def __init__(self):
+    def __init__(self, *params):
         pass
 
     def start(self):
@@ -17,13 +18,11 @@ class IDAQPlugin(IPlugin):
         :return:
         """
 
-
     def stop(self):
         """
 
         :return:
         """
-
 
     def init(self):
         """
@@ -31,14 +30,12 @@ class IDAQPlugin(IPlugin):
         :return:
         """
 
-
-    def open(self,address):
+    def open(self, address):
         """
 
         :param address:
         :return:
         """
-
 
     def close(self):
         """
@@ -46,8 +43,7 @@ class IDAQPlugin(IPlugin):
         :return:
         """
 
-
-    def get_data(self,samples):
+    def get_data(self, samples):
         """
 
         :param samples:
