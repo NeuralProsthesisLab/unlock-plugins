@@ -7,4 +7,4 @@ class PluginOne(ITestPlugin):
         print("This is a test plugin!")
 
     def print_status(self):
-        print("hello, world!")
+        print("Test plugin status: operational!")
