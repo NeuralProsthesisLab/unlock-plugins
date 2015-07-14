@@ -12,15 +12,10 @@ logging.basicConfig(level=logging.DEBUG)
 
 def main():
     # Load the plugins from the plugin directory.
-    manager = PluginManager()
-    manager.setPluginPlaces(["plugins"])  # todo: plugin directory should be set some other way (command line arg parsing?)
-    manager.setCategoriesFilter(dict(Test=ITestPlugin, DAQ=IDAQPlugin, App=IAppPlugin, Decoder=IDecoderPlugin))
-    manager.collectPlugins()
+    manager = ConfigurePluginManager()
 
-    # load the test plugin(s).
-    for plugin in manager.getPluginsOfCategory("Test"):
-        manager.activatePluginByName(plugin.name)
-        plugin.plugin_object.print_status()
+    # Load the Test Plugin
+    manager = ActivateTestPlugins(manager)
 
     # load at least one app, one decoder, and one driver.
     # defaults: app - hello-world or dashboard (todo: when written)
@@ -33,11 +28,37 @@ def main():
     #if(AreDecodersConfigured() is False):
     #    manager.activatePluginByName("keyboard", "Decoder")
 
+def ConfigurePluginManager(categories=None, pluginLocation=None):
+    if(categories is None):
+        categories = dict(Test=ITestPlugin, DAQ=IDAQPlugin, App=IAppPlugin, Decoder=IDecoderPlugin)
+    if(pluginLocation is None):
+        pluginLocation = ["plugins"]
+    manager = PluginManager()
+    manager.setPluginPlaces(pluginLocation)  # todo: plugin directory should be set some other way (command line arg parsing?)
+    manager.setCategoriesFilter(categories)
+    manager.collectPlugins()
+    return manager
+
+def ActivateTestPlugins(manager):
+    # load the test plugin(s).
+    for plugin in manager.getPluginsOfCategory("Test"):
+        manager.activatePluginByName(plugin.name)
+        plugin.plugin_object.print_status()
+    return manager
 
 def AreAppsConfigured():
+    """
+    Here we check to see if there are any apps that were specifically requested
+    to be activated from some as-yet-undetermined argument/config parsing
+    :return: a boolean
+    """
     return False
 
 def AreDecodersConfigured():
+    """
+    Here we check to see which decoders we need.
+    :return: a boolean
+    """
     return False
 
 
