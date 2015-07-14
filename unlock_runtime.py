@@ -1,11 +1,13 @@
 __author__ = 'Graham Voysey'
 # ref https://web.archive.org/web/20130731202108/http://lateral.netmanagers.com.ar/weblog/posts/BB923.html
 from yapsy.PluginManager import PluginManager
-from plugins.plugin_one.plugin_one import PluginOne
 from plugins.drivers.idaqplugin import IDAQPlugin
 from plugins.apps.iappplugin import IAppPlugin
+from plugins.plugin_one.itestplugin import ITestPlugin
+from plugins.plugin_one import plugin_one
 import core
 import logging
+
 logging.basicConfig(level=logging.DEBUG)
 
 
@@ -14,7 +16,7 @@ def main():
     manager = PluginManager() #categories_filter={"testers": PluginOne}
     manager.setPluginPlaces(["plugins"])
     manager.setCategoriesFilter({
-        "Test": PluginOne,
+        "Test": ITestPlugin,
         "DAQ": IDAQPlugin,
         "App": IAppPlugin,
     })

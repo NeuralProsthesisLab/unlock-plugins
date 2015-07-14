@@ -6,4 +6,4 @@ Module = plugin_one
 [Documentation]
 Author = Graham Voysey
 Version = 0.1
-Description = Test plugin system
+Description = Test apps for plugin system

@@ -1,9 +1,10 @@
 __author__ = 'Graham Voysey'
-from yapsy.IPlugin import IPlugin
+from plugins.plugin_one.itestplugin import ITestPlugin
 
-class PluginOne(IPlugin):
 
+class PluginOne(ITestPlugin):
     def print_name(self):
-        print("This is plugin 1")
+        print("This is a test plugin!")
+
     def print_status(self):
         print("hello, world!")
