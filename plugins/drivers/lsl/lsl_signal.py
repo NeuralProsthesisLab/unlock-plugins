@@ -1,8 +1,6 @@
 import uuid
-
 import numpy as np
-
-import unlock.bci.acquire.pylsl as lsl
+import plugins.drivers.lsl.pylsl as lsl
 
 
 class LSLSignal(object):
@@ -90,7 +88,7 @@ class LSLSignal(object):
         self.data = data.flatten()
         return len(self.data)
 
-    def getdata(self, samples):
+    def getData(self, samples):
         return self.data[0:samples]
 
     def stop(self):
