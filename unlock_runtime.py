@@ -6,6 +6,7 @@ from plugins.drivers.idaqplugin import IDAQPlugin
 from plugins.apps.iappplugin import IAppPlugin
 from plugins.plugin_one.itestplugin import ITestPlugin
 from plugins.decoders.idecoderplugin import IDecoderPlugin
+from core import pyglet_window
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -23,21 +24,31 @@ def main():
     #           driver -  none
     # todo: non-default values should come from where the plugin directory root comes from -- some command line input or config file.
 
-    #if(AreAppsConfigured() is False):
+    # if(AreAppsConfigured() is False):
     #    manager.activatePluginByName("HelloWorld","App")
-    #if(AreDecodersConfigured() is False):
+    # if(AreDecodersConfigured() is False):
     #    manager.activatePluginByName("keyboard", "Decoder")
 
+    # start pyglet
+    window = pyglet_window.PygletWindow(signal=None)
+    window.set_fullscreen(fullscreen=True)
+
+
+    #window.start()
+
+
 def ConfigurePluginManager(categories=None, pluginLocation=None):
-    if(categories is None):
+    if categories is None:
         categories = dict(Test=ITestPlugin, DAQ=IDAQPlugin, App=IAppPlugin, Decoder=IDecoderPlugin)
-    if(pluginLocation is None):
+    if pluginLocation is None:
         pluginLocation = ["plugins"]
     manager = PluginManager()
-    manager.setPluginPlaces(pluginLocation)  # todo: plugin directory should be set some other way (command line arg parsing?)
+    # todo: plugin directory and categories should be set some other way (command line arg parsing?)
+    manager.setPluginPlaces(pluginLocation)
     manager.setCategoriesFilter(categories)
     manager.collectPlugins()
     return manager
+
 
 def ActivateTestPlugins(manager):
     # load the test plugin(s).
@@ -46,6 +57,7 @@ def ActivateTestPlugins(manager):
         plugin.plugin_object.print_status()
     return manager
 
+
 def AreAppsConfigured():
     """
     Here we check to see if there are any apps that were specifically requested
@@ -53,6 +65,7 @@ def AreAppsConfigured():
     :return: a boolean
     """
     return False
+
 
 def AreDecodersConfigured():
     """

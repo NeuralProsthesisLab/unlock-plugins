@@ -1,5 +1,7 @@
 __author__ = 'Graham Voysey'
 import pyglet
+
+
 class PygletWindow(pyglet.window.Window):
     def __init__(self, signal, fullscreen=False, show_fps=True, vsync=False):
         super(PygletWindow, self).__init__(fullscreen=fullscreen, vsync=vsync)
@@ -12,6 +14,7 @@ class PygletWindow(pyglet.window.Window):
         else:
             def empty():
                 pass
+
             self.fps = empty
         self.active_controller = None
 
@@ -56,7 +59,7 @@ class PygletWindow(pyglet.window.Window):
 
         self.views = controller.views
         self.batches = controller.batches
-        pyglet.clock.schedule(controller.poll_signal)#, controller.poll_signal_frequency)
+        pyglet.clock.schedule(controller.poll_signal)  # , controller.poll_signal_frequency)
         self.active_controller = controller
 
     def deactivate_controller(self):
@@ -74,6 +77,7 @@ class PygletWindow(pyglet.window.Window):
     def start(self):
         pyglet.app.run()
 
+
 class Canvas(object):
     def __init__(self, batch, width, height, xoffset=0, yoffset=0):
         self.batch = batch
@@ -90,6 +94,7 @@ class Canvas(object):
 
     def ycenter(self):
         return self.height / 2 + self.y
+
 
 class Command(object):
     def __init__(self, delta=None, decision=None, selection=None, data=None, json=False):
@@ -128,7 +133,6 @@ class Command(object):
         else:
             ret = pickle.loads(serialized_command)
         return ret
-
 
 
 class PygletKeyboardCommand(Command):
