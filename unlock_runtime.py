@@ -6,7 +6,9 @@ from plugins.drivers.idaqplugin import IDAQPlugin
 from plugins.apps.iappplugin import IAppPlugin
 from plugins.plugin_one.itestplugin import ITestPlugin
 from plugins.decoders.idecoderplugin import IDecoderPlugin
-from core import pyglet_window
+from core import pyglet_window, pyglet_text,pyglet_sprite
+
+from pyglet import graphics
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -30,8 +32,16 @@ def main():
     #    manager.activatePluginByName("keyboard", "Decoder")
 
     # start pyglet
+    #window = pyglet_window.PygletWindow(signal=None)
+    #window.set_fullscreen(fullscreen=True)
+    batch = graphics.Batch()
+    canvas = pyglet_window.Canvas(batch,200,200)
+    label = pyglet_text.PygletTextLabel(canvas,"hello, world!",canvas.xcenter(),canvas.ycenter(), model=None)
     window = pyglet_window.PygletWindow(signal=None)
-    window.set_fullscreen(fullscreen=True)
+
+    logging.log("done")
+
+
 
 
     #window.start()
