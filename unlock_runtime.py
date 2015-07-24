@@ -6,7 +6,7 @@ from plugins.drivers.idaqplugin import IDAQPlugin
 from plugins.apps.iappplugin import IAppPlugin
 from plugins.plugin_one.itestplugin import ITestPlugin
 from plugins.decoders.idecoderplugin import IDecoderPlugin
-from core import pyglet_window, pyglet_text,pyglet_sprite
+from core import pyglet_window, pyglet_text,pyglet_sprite, unlockstate
 
 from pyglet import graphics
 
@@ -36,10 +36,15 @@ def main():
     #window.set_fullscreen(fullscreen=True)
     batch = graphics.Batch()
     canvas = pyglet_window.Canvas(batch,200,200)
-    label = pyglet_text.PygletTextLabel(canvas,"hello, world!",canvas.xcenter(),canvas.ycenter(), model=None)
-    window = pyglet_window.PygletWindow(signal=None)
+    model =  unlockstate.RunState()
+    model.rest()
+    label = pyglet_text.PygletTextLabel(model,canvas,"hello, world!",canvas.xcenter(),canvas.ycenter())
 
-    logging.log("done")
+    window = pyglet_window.PygletWindow(signal=None)
+    label.render()
+    window.activate()
+
+    logging.log(logging.INFO,"done!")
 
 
 
