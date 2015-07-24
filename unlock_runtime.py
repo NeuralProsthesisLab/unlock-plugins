@@ -10,7 +10,7 @@ from core import pyglet_window, pyglet_text,pyglet_sprite, unlockstate
 
 from pyglet import graphics
 
-logging.basicConfig(level=logging.DEBUG)
+#logging.basicConfig(level=logging.DEBUG)
 
 
 def main():
