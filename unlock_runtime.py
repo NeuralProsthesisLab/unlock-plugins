@@ -36,8 +36,8 @@ def main():
     #window.set_fullscreen(fullscreen=True)
     batch = graphics.Batch()
     canvas = pyglet_window.Canvas(batch,200,200)
-    model = unlockstate.UnlockState()
-    #model.rest()
+    model =  unlockstate.UnlockState()
+    model.state = True
     label = pyglet_text.PygletTextLabel(model,canvas,"hello, world!",canvas.xcenter(),canvas.ycenter())
     label2 = pyglet_text.PygletLabel(model,canvas,"Hello, World", canvas.xcenter(),canvas.ycenter())
     window = pyglet_window.PygletWindow(signal=None)
