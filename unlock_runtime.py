@@ -37,13 +37,17 @@ def main():
     batch = graphics.Batch()
     canvas = pyglet_window.Canvas(batch,200,200)
     model =  unlockstate.UnlockState()
-    model.state = True
+    model.start()
     label = pyglet_text.PygletTextLabel(model,canvas,"hello, world!",canvas.xcenter(),canvas.ycenter())
     label2 = pyglet_text.PygletLabel(model,canvas,"Hello, World", canvas.xcenter(),canvas.ycenter())
     window = pyglet_window.PygletWindow(signal=None)
-    label.render()
-    label2.render()
-    #window.activate()
+
+    while model.is_stopped() is False:
+        window.canvas = canvas
+        label.render()
+        label2.render()
+        window.activate()
+
 
     logging.log(logging.INFO,"done!")
 

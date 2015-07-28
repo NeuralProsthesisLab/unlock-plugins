@@ -25,9 +25,11 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#import numpy as np  todo
+import numpy as np
 import logging
 import time
+
+logging.basicConfig(level=logging.DEBUG)
 
 class UnlockState(object):
     def __init__(self, state=None):
@@ -109,8 +111,7 @@ class OfflineData(UnlockState):
             return
 
         if command.is_valid():
-            #np.savetxt(self.file_handle, command.matrix, fmt='%d', delimiter='\t')
-            pass #todo
+            np.savetxt(self.file_handle, command.matrix, fmt='%d', delimiter='\t')
         else:
             if (time.time() - self.last_invalid) < 1.5:
                 self.invalid_count += 1
