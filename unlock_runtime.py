@@ -18,7 +18,7 @@ def main():
     manager = ConfigurePluginManager()
 
     # Load the Test Plugin
-    manager = ActivateTestPlugins(manager)
+    manager = ActivatePluginsOfCategory(manager)
 
     # load at least one app, one decoder, and one driver.
     # defaults: app - hello-world or dashboard (todo: when written)
@@ -36,13 +36,14 @@ def main():
     #window.set_fullscreen(fullscreen=True)
     batch = graphics.Batch()
     canvas = pyglet_window.Canvas(batch,200,200)
-    model =  unlockstate.RunState()
-    model.rest()
+    model = unlockstate.UnlockState()
+    #model.rest()
     label = pyglet_text.PygletTextLabel(model,canvas,"hello, world!",canvas.xcenter(),canvas.ycenter())
-
+    label2 = pyglet_text.PygletLabel(model,canvas,"Hello, World", canvas.xcenter(),canvas.ycenter())
     window = pyglet_window.PygletWindow(signal=None)
     label.render()
-    window.activate()
+    label2.render()
+    #window.activate()
 
     logging.log(logging.INFO,"done!")
 
@@ -50,6 +51,7 @@ def main():
 
 
     #window.start()
+
 
 
 def ConfigurePluginManager(categories=None, pluginLocation=None):
@@ -65,9 +67,17 @@ def ConfigurePluginManager(categories=None, pluginLocation=None):
     return manager
 
 
-def ActivateTestPlugins(manager):
-    # load the test plugin(s).
-    for plugin in manager.getPluginsOfCategory("Test"):
+def ActivatePluginsOfCategory(manager, pluginCategory=None):
+    """
+    This is the pattern for locating all plugins of a specific type, iterating over them, and (normally) activating them.
+
+    :param manager: manager is the plugin manager object
+    :return: null.
+    """
+    if pluginCategory is None:
+        pluginCategory = "Test"
+
+    for plugin in manager.getPluginsOfCategory(pluginCategory):
         manager.activatePluginByName(plugin.name)
         plugin.plugin_object.print_status()
     return manager
