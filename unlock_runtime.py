@@ -6,9 +6,7 @@ from plugins.drivers.idaqplugin import IDAQPlugin
 from plugins.apps.iappplugin import IAppPlugin
 from plugins.plugin_one.itestplugin import ITestPlugin
 from plugins.decoders.idecoderplugin import IDecoderPlugin
-from core import pyglet_window, pyglet_text,pyglet_sprite, unlockstate
 
-from pyglet import graphics
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -31,30 +29,7 @@ def main():
     # if(AreDecodersConfigured() is False):
     #    manager.activatePluginByName("keyboard", "Decoder")
 
-    # start pyglet
-    #window = pyglet_window.PygletWindow(signal=None)
-    #window.set_fullscreen(fullscreen=True)
-    batch = graphics.Batch()
-    canvas = pyglet_window.Canvas(batch,200,200)
-    model =  unlockstate.UnlockState()
-    model.start()
-    label = pyglet_text.PygletTextLabel(model,canvas,"hello, world!",canvas.xcenter(),canvas.ycenter())
-    label2 = pyglet_text.PygletLabel(model,canvas,"Hello, World", canvas.xcenter(),canvas.ycenter())
-    window = pyglet_window.PygletWindow(signal=None)
 
-    while model.is_stopped() is False:
-        window.canvas = canvas
-        label.render()
-        label2.render()
-        window.activate()
-
-
-    logging.log(logging.INFO,"done!")
-
-
-
-
-    #window.start()
 
 
 
@@ -78,12 +53,15 @@ def ActivatePluginsOfCategory(manager, pluginCategory=None):
     :param manager: manager is the plugin manager object
     :return: null.
     """
+    # todo: if we're just running the test plugin, we know what its methods are, so we can just call them directly.
     if pluginCategory is None:
         pluginCategory = "Test"
 
-    for plugin in manager.getPluginsOfCategory(pluginCategory):
-        manager.activatePluginByName(plugin.name)
-        plugin.plugin_object.print_status()
+        for plugin in manager.getPluginsOfCategory(pluginCategory):
+            manager.activatePluginByName(plugin.name)
+            plugin.plugin_object.print_status()
+            plugin.plugin_object.display()
+
     return manager
 
 
