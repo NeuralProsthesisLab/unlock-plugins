@@ -7,5 +7,5 @@ class ITestPlugin(IPlugin):
     def print_status(self):
         return NotImplementedError
 
-    def display(self):
+    def start(self):
         return NotImplementedError

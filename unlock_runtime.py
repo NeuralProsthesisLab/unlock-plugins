@@ -60,7 +60,7 @@ def ActivatePluginsOfCategory(manager, pluginCategory=None):
         for plugin in manager.getPluginsOfCategory(pluginCategory):
             manager.activatePluginByName(plugin.name)
             plugin.plugin_object.print_status()
-            plugin.plugin_object.display()
+            plugin.plugin_object.start()
 
     return manager
 

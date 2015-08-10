@@ -30,6 +30,12 @@ class PygletWindow(pyglet.window.Window):
         def on_close():
             pass
 
+        @self.event
+        def on_draw():
+            pass
+            #self.views.clear()
+            #label.draw()
+
     def render(self):
         self.clear()
         for view in self.views:

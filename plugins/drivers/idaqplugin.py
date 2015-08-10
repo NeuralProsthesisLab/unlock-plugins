@@ -11,7 +11,7 @@ class IDAQPlugin(IPlugin):
     DAQ plugins consume raw information from a DAQ card (enobio, mobilab, any LSL device, tobii eye tracker, etc.)
     and emit processed data (as a numpy array, probably) to a decoder.
     """
-    name = ""
+
 
     def __init__(self, *params):
         pass
