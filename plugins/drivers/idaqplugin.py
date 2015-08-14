@@ -21,18 +21,21 @@ class IDAQPlugin(IPlugin):
 
         :return:
         """
+        return NotImplementedError
 
     def stop(self):
         """
 
         :return:
         """
+        return NotImplementedError
 
     def init(self):
         """
 
         :return:
         """
+        return NotImplementedError
 
     def open(self, address):
         """
@@ -40,12 +43,14 @@ class IDAQPlugin(IPlugin):
         :param address:
         :return:
         """
+        return NotImplementedError
 
     def close(self):
         """
 
         :return:
         """
+        return NotImplementedError
 
     def get_data(self, samples):
         """
@@ -53,3 +58,4 @@ class IDAQPlugin(IPlugin):
         :param samples:
         :return:
         """
+        return NotImplementedError

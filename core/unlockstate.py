@@ -206,7 +206,6 @@ class TimerState(object):
     value can cause problems. Keeping the residual time instead of a full
     reset has been shown to have better accuracy in this case.
     """
-    # todo : pull changes from byron's latest here.
     def __init__(self, duration):
         self.duration = float(duration)
         self.reset = lambda t: 0

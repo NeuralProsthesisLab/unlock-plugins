@@ -1,0 +1,7 @@
+#basic configuration
+appname:  newApp
+version:  0.1
+repo_url: ''
+#author configuration
+authorname: 'Unlock Project'
+authoremail: ''

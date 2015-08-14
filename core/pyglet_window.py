@@ -1,6 +1,6 @@
 __author__ = 'Graham Voysey'
 import pyglet
-
+import logging
 
 class PygletWindow(pyglet.window.Window):
     def __init__(self, signal, fullscreen=False, show_fps=True, vsync=False):
@@ -30,19 +30,14 @@ class PygletWindow(pyglet.window.Window):
         def on_close():
             pass
 
-        @self.event
-        def on_draw():
-            pass
-            #self.views.clear()
-            #label.draw()
 
     def render(self):
         self.clear()
-        for view in self.views:
-            view.render()
         for batch in self.batches:
             if batch:
                 batch.draw()
+        for view in self.views:
+            view.render()
         self.fps()
 
     def handle_stop_request(self):
@@ -54,8 +49,9 @@ class PygletWindow(pyglet.window.Window):
                 pyglet.app.exit()
             return pyglet.event.EVENT_HANDLED
         else:
-            self.signal.stop()
-            self.signal.close()
+            if self.signal is not None:
+                self.signal.stop()
+                self.signal.close()
             pyglet.app.exit()
 
     def activate_controller(self, controller):
@@ -148,6 +144,7 @@ class PygletKeyboardCommand(Command):
         labels = [ord(c) for c in 'abcdefghijklmnopqrstuvwxyz_12345']
         if symbol == pyglet.window.key.UP:
             self.decision = 1
+            logging.log(logging.INFO,'Received UP key press')
         elif symbol == pyglet.window.key.DOWN:
             self.decision = 2
         elif symbol == pyglet.window.key.LEFT:

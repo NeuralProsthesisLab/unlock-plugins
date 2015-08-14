@@ -6,11 +6,9 @@ from plugins.drivers.idaqplugin import IDAQPlugin
 from plugins.apps.iappplugin import IAppPlugin
 from plugins.plugin_one.itestplugin import ITestPlugin
 from plugins.decoders.idecoderplugin import IDecoderPlugin
-from core import pyglet_window, pyglet_text,pyglet_sprite, unlockstate
 
-from pyglet import graphics
-
-logging.basicConfig(level=logging.DEBUG)
+##turn on to see yapsy plugin registration messages
+#logging.basicConfig(level=logging.DEBUG)
 
 
 def main():
@@ -18,7 +16,7 @@ def main():
     manager = ConfigurePluginManager()
 
     # Load the Test Plugin
-    manager = ActivatePluginsOfCategory(manager)
+    manager = ActivatePlugins(manager,["Test", "App"])
 
     # load at least one app, one decoder, and one driver.
     # defaults: app - hello-world or dashboard (todo: when written)
@@ -30,7 +28,7 @@ def main():
     #    manager.activatePluginByName("HelloWorld","App")
     # if(AreDecodersConfigured() is False):
     #    manager.activatePluginByName("keyboard", "Decoder")
-    logging.log(logging.INFO,"done!")
+    logging.log(logging.INFO,"unlock exiting ...")
 
 
 def ConfigurePluginManager(categories=None, pluginLocation=None):
@@ -46,22 +44,27 @@ def ConfigurePluginManager(categories=None, pluginLocation=None):
     return manager
 
 
-def ActivatePluginsOfCategory(manager, pluginCategory=None):
+def ActivatePlugins(manager, categories=[]):
     """
     This is the pattern for locating all plugins of a specific type, iterating over them, and (normally) activating them.
 
     :param manager: manager is the plugin manager object
     :return: null.
     """
-    if pluginCategory is None:
-        pluginCategory = "Test"
 
-    for plugin in manager.getPluginsOfCategory(pluginCategory):
-        manager.activatePluginByName(plugin.name)
-        plugin.plugin_object.print_status()
-            plugin.plugin_object.display()
+    for category in categories:
+        if category == "Test":
+            for plugin in manager.getPluginsOfCategory(category):
+                manager.activatePluginByName(plugin.name)
+                plugin.plugin_object.test()
+        if category == "App":
+            # todo this logic will change substantially once Dashboard exists.  (and become "load dashboard", and cache other names)
+            for plugin in manager.getPluginsOfCategory(category):
+                manager.activatePluginByName(plugin.name)
+                plugin.plugin_object.configure()
+                plugin.plugin_object.start()
+
     return manager
-
 
 def AreAppsConfigured():
     """

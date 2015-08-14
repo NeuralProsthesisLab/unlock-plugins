@@ -1,0 +1,9 @@
+[Core]
+Name = Hello World
+Module = helloworld
+
+
+[Documentation]
+Author = Graham Voysey
+Version = 0.1
+Description = Demonstration app for unlock

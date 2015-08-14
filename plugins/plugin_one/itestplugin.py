@@ -4,8 +4,5 @@ from yapsy.IPlugin import IPlugin
 
 class ITestPlugin(IPlugin):
 
-    def print_status(self):
-        return NotImplementedError
-
-    def start(self):
+    def test(self):
         return NotImplementedError

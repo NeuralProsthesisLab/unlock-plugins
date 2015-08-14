@@ -1,0 +1,8 @@
+[Core]
+Name = {{ appname }}
+Module = {{ appname }}
+
+[Documentation]
+Author = {{ authorname }}
+Version = {{ version }}
+Description = {{ repo_url }}
