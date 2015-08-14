@@ -2,9 +2,8 @@ __author__ = 'Graham Voysey'
 
 from jinja2 import Environment, FileSystemLoader
 from os import path
-import yaml, sys, os, argparse, base, glob
+import yaml, sys, os, argparse, base
 
-currentLocation = sys.argv[0]
 rootDir = base.rootPath
 generatorPath = path.join(base.rootPath,"plugin_generator")
 templatePath = path.join(generatorPath,"templates")
@@ -24,8 +23,6 @@ assert (path.isdir(args.output))
 with open(yamlPath) as _:
     configDict = yaml.load(_)
 
-# read in the templates
-
 # Make a folder whose name is the app.
 appBasePath = path.join(args.output, configDict['appname'])
 os.mkdir(appBasePath)
@@ -33,19 +30,21 @@ os.mkdir(appBasePath)
 # render the templated app files
 env = Environment(loader=FileSystemLoader(templatePath))
 for file in os.listdir(templatePath):
+    #render it
+    template = env.get_template(file)
+    retval = template.render(config=configDict)
+
     if file.endswith(".pytemplate"):
-        template = env.get_template(file)
-        retval = template.render(config=configDict)
         if file == "app.pytemplate":
+            # if the template is the base app, name the new file the name of the new app
             outfile = configDict['appname'] + ".py"
         else:
+            #otherwise name it the same as its template with the right extension
             outfile = path.splitext(file)[0] + ".py"
         with open(path.join(appBasePath,outfile),"w") as _:
             _.write(retval)
 
     if file.endswith(".yptemplate"):
-        template = env.get_template(file)
-        retval = template.render(config=configDict)
         outfile = configDict['appname'] + ".yapsy-plugin"
         with open(path.join(appBasePath,outfile),"w") as _:
             _.write(retval)
