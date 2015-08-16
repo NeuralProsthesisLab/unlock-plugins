@@ -32,7 +32,7 @@ env = Environment(loader=FileSystemLoader(templatePath))
 for file in os.listdir(templatePath):
     #render it
     template = env.get_template(file)
-    retval = template.render(config=configDict)
+    retval = template.render(yaml=configDict)
 
     if file.endswith(".pytemplate"):
         if file == "app.pytemplate":

@@ -1,8 +1,8 @@
 [Core]
-Name = {{ appname }}
-Module = {{ appname }}
+Name = {{ yaml['appname'] }}
+Module = {{ yaml['appname'] }}
 
 [Documentation]
-Author = {{ authorname }}
-Version = {{ version }}
-Description = {{ repo_url }}
+Author = {{ yaml['authorname'] }}
+Version = {{ yaml['version'] }}
+Description = {{ yaml['repo_url'] }}
