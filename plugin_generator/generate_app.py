@@ -13,14 +13,14 @@ yamlPath = path.join(generatorPath, "AppConfig.yaml")
 
 # parse input arguments: a path to the yaml config file and an output dir
 parser = argparse.ArgumentParser()
-parser.add_argument("config", nargs='?',
-                    help="YAML file with app configuration values",
-                    action='store',
-                    default=yamlPath)
 parser.add_argument("output", nargs='?',
                     help='directory to use',
                     action='store',
                     default=path.expanduser("~"))
+parser.add_argument("config", nargs='?',
+                    help="YAML file with app configuration values",
+                    action='store',
+                    default=yamlPath)
 args = parser.parse_args()
 
 # make sure the output path makes sense
@@ -41,7 +41,10 @@ for file in listdir(templatePath):
     retval = template.render(yaml=configDict)
     # generate all the python module stubs
     if file.endswith(".pytemplate"):
-        out = path.splitext(file)[0] + ".py" if file != "app.pytemplate" else out = configDict['appname'] + ".py"
+        if file == "app.pytemplate":
+            out = path.splitext(file)[0] + ".py"
+        else:
+            out = configDict['appname'] + ".py"
         with open(path.join(appBasePath, out), "w") as _:
             _.write(retval)
     # generate the plugin registration file
