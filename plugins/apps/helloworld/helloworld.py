@@ -31,8 +31,5 @@ class HelloWorld(IAppPlugin):
     def start(self):
         assert self.isConfigured
         # sandbox; just do all the app creation here for now.
-        self.window.render()
         self.window.start()
         logging.log(logging.INFO, "Hello World execution complete ...")
-
-

@@ -30,6 +30,10 @@ class PygletWindow(pyglet.window.Window):
         def on_close():
             pass
 
+        @self.event
+        def on_draw():
+            self.render()
+
 
     def render(self):
         self.clear()

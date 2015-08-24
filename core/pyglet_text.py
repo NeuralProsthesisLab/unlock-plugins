@@ -17,19 +17,21 @@ class PygletLabel(UnlockView):
         self.label = None
         if len(color) == 3:
             color = color + (255,)
-        self.color = color        
+        self.color = color
         self.logger = logging.getLogger(__name__)
-        
+
     def render(self):
         self.last_state = self.state
         self.state = self.model.get_state()
-        
+
         if self.state and self.label is not None:
             self.label.text = self.text
         elif self.label is not None:
             self.label.text = ''
-            
-            
+
+        self.label.draw()
+
+
 class PygletTextLabel(PygletLabel):
     def __init__(self, model, canvas, text, x, y, width=None, height=None, anchor_x='center', anchor_y='center', font='Helvetica', size=48,
                  color=(255,255,255,255), group=None):
@@ -55,7 +57,7 @@ class PygletTextLabel(PygletLabel):
                             x=self.canvas.x+self.x, y=self.canvas.y+self.y,
                             anchor_x=anchor_x, anchor_y=anchor_y, color=self.color, width=width, height=height,
                             group=group,batch=self.canvas.batch)
-            
+
         self.label.text = text
         self.logger = logging.getLogger(__name__)
 
@@ -93,15 +95,15 @@ class DynamicPositionPygletTextLabel(PygletTextLabel):
         self.x, self.y, self.state = self.model.get_state()
         #print "x = ", self.x, " self.y = ", self.y, " state = ", self.state
         self.logger.debug("PygletTextLabel text = ", self.label.text, " last state, state = ", self.last_state, self.state)
-        
+
         if self.state:
             self.label.text = self.text
             self.label.x = self.x
-            self.label.y = self.y            
+            self.label.y = self.y
         else:
             self.label.text = ''
-        
-            
+
+
 class BellRingTextLabelDecorator(UnlockView):
     def __init__(self, text_label):
         super(BellRingTextLabelDecorator, self).__init__()
@@ -109,18 +111,18 @@ class BellRingTextLabelDecorator(UnlockView):
         self.model = self.text_label.model
         self.sound = pyglet.media.StaticSource(pyglet.media.load(os.path.join(os.path.dirname(inspect.getfile(BellRingTextLabelDecorator)), 'bell-ring-01.mp3')))
         self.state = True
-        self.logger = logging.getLogger(__name__)        
-        
-    def render(self):   
+        self.logger = logging.getLogger(__name__)
+
+    def render(self):
         self.last_state = self.state
         self.state = self.model.get_state()
         self.logger.debug("BellRingTextLabelDecorator text = ", self.text_label.label.text, " last state, state = ", self.last_state, self.state)
-            
+
         if self.state:
             if self.last_state != self.state:
                 pass
                 self.sound.play()
-                
+
             self.text_label.label.text = self.text_label.text
         else:
             self.text_label.label.text = ''
