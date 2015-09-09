@@ -2,7 +2,7 @@ __author__ = 'Graham Voysey'
 # ref http://pythonhosted.org/PyDAQmx/usage.html
 from PyDAQmx import *
 import numpy
-from plugins.drivers.idaqplugin import IDAQPlugin
+from plugins.drivers.daqplugin import DAQPlugin
 
 
 analog_input = Task()

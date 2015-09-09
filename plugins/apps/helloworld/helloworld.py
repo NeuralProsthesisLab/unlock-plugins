@@ -1,11 +1,11 @@
 __author__ = 'Graham Voysey'
-from plugins.apps.iappplugin import IAppPlugin
+from plugins.apps.appplugin import AppPlugin
 from pyglet import graphics
 from core import pyglet_window, unlockstate,pyglet_text
 
 import logging
 
-class HelloWorld(IAppPlugin):
+class HelloWorld(AppPlugin):
 
     def __init__(self):
         self.isConfigured = False

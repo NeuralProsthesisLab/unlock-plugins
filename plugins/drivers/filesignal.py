@@ -1,8 +1,8 @@
 __author__ = 'Graham Voysey'
-from plugins.drivers.idaqplugin import IDAQPlugin
+from plugins.drivers.daqplugin import DAQPlugin
 
 
-class FileSignal(IDAQPlugin):
+class FileSignal(DAQPlugin):
     def name(self):
         return "File Signal"
 

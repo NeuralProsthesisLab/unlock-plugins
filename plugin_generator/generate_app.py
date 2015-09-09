@@ -14,7 +14,7 @@ yamlPath = path.join(generatorPath, "AppConfig.yaml")
 # parse input arguments: a path to the yaml config file and an output dir
 parser = argparse.ArgumentParser()
 parser.add_argument("output", nargs='?',
-                    help='directory to use',
+                    help='The root directory for the new application',
                     action='store',
                     default=path.expanduser("~"))
 parser.add_argument("config", nargs='?',
@@ -54,3 +54,5 @@ for file in listdir(templatePath):
             _.write(retval)
 
 print("A new app template has been generated in {0}", appBasePath)
+
+
