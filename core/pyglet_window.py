@@ -151,12 +151,16 @@ class PygletKeyboardCommand(Command):
             logging.log(logging.INFO,'Received UP key press')
         elif symbol == pyglet.window.key.DOWN:
             self.decision = 2
+            logging.log(logging.INFO, 'Received DOWN key press')
         elif symbol == pyglet.window.key.LEFT:
             self.decision = 3
+            logging.log(logging.INFO, 'Received LEFT key press')
         elif symbol == pyglet.window.key.RIGHT:
             self.decision = 4
+            logging.log(logging.INFO, 'Received RIGHT key press')
         elif symbol == pyglet.window.key.SPACE:
             self.selection = 1
+            logging.log(logging.INFO, 'Received SPACE key press')
         elif symbol == pyglet.window.key.ESCAPE:
             self.stop = True
         elif symbol in labels:

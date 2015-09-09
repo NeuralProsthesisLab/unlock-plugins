@@ -44,27 +44,27 @@ def ConfigurePluginManager(categories=None, pluginLocation=None):
     return manager
 
 
-def ActivatePlugins(manager, categories=[]):
+def ActivatePlugins(manager, categories=None):
     """
     This is the pattern for locating all plugins of a specific type, iterating over them, and (normally) activating them.
 
     :param manager: manager is the plugin manager object
     :return: null.
     """
+    if categories is not None:
+        for category in categories:
+            if category == "Test":
+                for plugin in manager.getPluginsOfCategory(category):
+                    manager.activatePluginByName(plugin.name)
+                    plugin.plugin_object.test()
+            if category == "App":
+                # todo this logic will change substantially once Dashboard exists.  (and become "load dashboard", and cache other names)
+                for plugin in manager.getPluginsOfCategory(category):
+                    manager.activatePluginByName(plugin.name)
+                    plugin.plugin_object.configure()
+                    plugin.plugin_object.start()
 
-    for category in categories:
-        if category == "Test":
-            for plugin in manager.getPluginsOfCategory(category):
-                manager.activatePluginByName(plugin.name)
-                plugin.plugin_object.test()
-        if category == "App":
-            # todo this logic will change substantially once Dashboard exists.  (and become "load dashboard", and cache other names)
-            for plugin in manager.getPluginsOfCategory(category):
-                manager.activatePluginByName(plugin.name)
-                plugin.plugin_object.configure()
-                plugin.plugin_object.start()
-
-    return manager
+        return manager
 
 def AreAppsConfigured():
     """
