@@ -1,8 +1,8 @@
 __author__ = {{ yaml['authorname'] }}
-from plugins.apps.iappplugin import IAppPlugin
+from plugins.apps.iappplugin import AppPlugin
 
 
-class {{ yaml['appname'] }}(IAppPlugin):
+class {{ yaml['appname'] }}(AppPlugin):
     """
     Apps consume commands (up, down, left, right) and selections (yes/no) to perform basically arbitrary actions on a pyglet window.
     """

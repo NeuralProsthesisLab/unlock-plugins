@@ -1,6 +1,6 @@
-from plugins.drivers.idaqplugin import IDAQPlugin
+from plugins.drivers.daqplugin import DAQPlugin
 
 __author__ = 'Graham Voysey'
 
-class FunctionSignal(IDAQPlugin):
+class FunctionSignal(DAQPlugin):
     pass

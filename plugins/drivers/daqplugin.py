@@ -6,7 +6,7 @@ import logging
 logging.getLogger('yaspy').setLevel(logging.DEBUG)
 
 
-class IDAQPlugin(IPlugin):
+class DAQPlugin(IPlugin):
     """
     DAQ plugins consume raw information from a DAQ card (enobio, mobilab, any LSL device, tobii eye tracker, etc.)
     and emit processed data (as a numpy array, probably) to a decoder.

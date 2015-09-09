@@ -1,8 +1,8 @@
 __author__ = 'Graham Voysey'
 
-from plugins.drivers.idaqplugin import IDAQPlugin
+from plugins.drivers.daqplugin import DAQPlugin
 
-class LSL(IDAQPlugin):
+class LSL(DAQPlugin):
     def name(self):
         return "Lab Streaming Layer"
 

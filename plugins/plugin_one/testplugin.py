@@ -2,7 +2,7 @@ __author__ = 'gvoysey'
 from yapsy.IPlugin import IPlugin
 
 
-class ITestPlugin(IPlugin):
+class TestPlugin(IPlugin):
 
     def test(self):
         return NotImplementedError

@@ -2,10 +2,10 @@ __author__ = 'Graham Voysey'
 # ref https://web.archive.org/web/20130731202108/http://lateral.netmanagers.com.ar/weblog/posts/BB923.html for plugin stuff.
 import logging
 from yapsy.PluginManager import PluginManager
-from plugins.drivers.idaqplugin import IDAQPlugin
-from plugins.apps.iappplugin import IAppPlugin
-from plugins.plugin_one.itestplugin import ITestPlugin
-from plugins.decoders.idecoderplugin import IDecoderPlugin
+from plugins.drivers.daqplugin import DAQPlugin
+from plugins.apps.appplugin import AppPlugin
+from plugins.plugin_one.testplugin import TestPlugin
+from plugins.decoders.decoderplugin import DecoderPlugin
 
 ##turn on to see yapsy plugin registration messages
 #logging.basicConfig(level=logging.DEBUG)
@@ -33,7 +33,7 @@ def main():
 
 def ConfigurePluginManager(categories=None, pluginLocation=None):
     if categories is None:
-        categories = dict(Test=ITestPlugin, DAQ=IDAQPlugin, App=IAppPlugin, Decoder=IDecoderPlugin)
+        categories = dict(Test=TestPlugin, DAQ=DAQPlugin, App=AppPlugin, Decoder=DecoderPlugin)
     if pluginLocation is None:
         pluginLocation = ["plugins"]
     manager = PluginManager()
