@@ -1,7 +1,7 @@
 import pyglet
 import logging
 
-from core.unlockview import UnlockView
+from core.unlockviews import UnlockView
 from math import cos, sin, radians
 
 

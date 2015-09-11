@@ -31,9 +31,9 @@ import time
 
 logging.basicConfig(level=logging.DEBUG)
 
-class UnlockState(object):
+class UnlockModel(object):
     def __init__(self, state=None):
-        super(UnlockState, self).__init__()
+        super(UnlockModel, self).__init__()
         self.state = state
         self.running = False
         
@@ -54,9 +54,9 @@ class UnlockState(object):
         pass
         
         
-class UnlockStateChain(UnlockState):
+class UnlockModelChain(UnlockModel):
     def __init__(self, states):
-        super(UnlockStateChain, self).__init__()
+        super(UnlockModelChain, self).__init__()
         self.states = states
         
     def start(self):
@@ -75,7 +75,7 @@ class UnlockStateChain(UnlockState):
                 state.process_command(command)
                 
                 
-class AlternatingBinaryState(UnlockState):
+class AlternatingBinaryModel(UnlockModel):
     def __init__(self, hold_duration=300):
         self.hold_duration = hold_duration
         self.state = True
@@ -89,7 +89,7 @@ class AlternatingBinaryState(UnlockState):
         return ret
             
             
-class OfflineData(UnlockState):
+class OfflineData(UnlockModel):
     def __init__(self, output_file_prefix, cache_size=1):
         super(OfflineData, self).__init__()
         self.output_file_prefix = output_file_prefix
@@ -167,39 +167,39 @@ class OfflineTrialData(OfflineData):
             
             
             
-class NonBlockingOfflineData(UnlockState):
+class NonBlockingOfflineData(UnlockModel):
     def __init__(self):
         raise NotImplementedError()
         
         
-class RunState(object):
+class RunModel(object):
     Stopped = 0
     Running = 1
     Resting = 2
 
     def __init__(self):
-        self.state = RunState.Stopped
+        self.state = RunModel.Stopped
         
     def run(self):
-        self.state = RunState.Running
+        self.state = RunModel.Running
         
     def rest(self):
-        self.state = RunState.Resting
+        self.state = RunModel.Resting
         
     def stop(self):
-        self.state = RunState.Stopped
+        self.state = RunModel.Stopped
         
     def is_running(self):
-        return self.state == RunState.Running
+        return self.state == RunModel.Running
         
     def is_resting(self):
-        return self.state == RunState.Resting
+        return self.state == RunModel.Resting
         
     def is_stopped(self):
-        return self.state == RunState.Stopped
+        return self.state == RunModel.Stopped
         
 
-class TimerState(object):
+class TimerModel(object):
     """
     A timer based off the variable time deltas coming from the system.
     In the event the timer duration is small i.e. < 100ms, jitter in the delta
@@ -229,7 +229,7 @@ class TimerState(object):
         self.duration = float(duration)
 
 
-class FrameCountTimerState(object):
+class FrameCountTimerModel(object):
     """
     A timer based off the variable time deltas coming from the system.
     In the event the timer duration is small i.e. < 100ms, jitter in the delta
@@ -258,34 +258,34 @@ class FrameCountTimerState(object):
 #     that the trials are 'stacked'.  then rests can be stacked with trials abstractly.  this
 #     would help to optimize cases that have no rest condition; currently a bunch of statements are
 #     processed to handle that case.
-class TrialState(object):
+class TrialModel(object):
     Unchanged = 0
     TrialExpiry = 1
     RestExpiry = 2
 
     def __init__(self, trial_timer, rest_timer, run_state):
-        super(TrialState, self).__init__()
+        super(TrialModel, self).__init__()
         self.trial_timer = trial_timer
         self.rest_timer = rest_timer
         self.run_state = run_state
         self.active_timer = self.trial_timer
         
         self.state_change = False
-        self.last_change = TrialState.Unchanged
+        self.last_change = TrialModel.Unchanged
         
         def state_change_fn():
-            change_value = TrialState.Unchanged
+            change_value = TrialModel.Unchanged
             if self.active_timer.is_complete():
                 if self.run_state.is_running():
                     self.run_state.rest()
                     self.active_timer = self.rest_timer
-                    change_value = TrialState.TrialExpiry
+                    change_value = TrialModel.TrialExpiry
                 elif self.run_state.is_resting():
                     self.run_state.run()
                     self.active_timer = self.trial_timer
-                    change_value = TrialState.RestExpiry
+                    change_value = TrialModel.RestExpiry
                 self.active_timer.begin_timer()
-            if change_value != TrialState.Unchanged:
+            if change_value != TrialModel.Unchanged:
                 self.state_change = True
                 self.last_change = change_value
             return self.run_state.state, change_value
@@ -298,7 +298,7 @@ class TrialState(object):
         
     def start(self):
         self.active_timer = self.trial_timer
-        self.last_change = TrialState.Unchanged
+        self.last_change = TrialModel.Unchanged
         self.run_state.run()
         self.active_timer.begin_timer()
         
@@ -312,11 +312,11 @@ class TrialState(object):
         if self.state_change:
             self.state_change = False
             ret = self.last_change
-            self.last_change = TrialState.Unchanged
+            self.last_change = TrialModel.Unchanged
             return ret
             
 
-class SequenceState(object):
+class SequenceModel(object):
     def __init__(self, sequence, value_transformer_fn=lambda x: x):
         self.sequence = sequence
         self.value_transformer_fn = value_transformer_fn

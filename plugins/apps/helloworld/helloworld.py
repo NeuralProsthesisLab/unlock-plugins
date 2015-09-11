@@ -1,7 +1,7 @@
 __author__ = 'Graham Voysey'
 from plugins.apps.appplugin import AppPlugin
 from pyglet import graphics
-from core import pyglet_window, unlockstate,pyglet_text
+from core import pyglet_window, unlockmodels,pyglet_text
 
 import logging
 
@@ -14,7 +14,7 @@ class HelloWorld(AppPlugin):
 
     def configure(self):
         #define model
-        self.model = unlockstate.UnlockState(True)
+        self.model = unlockmodels.UnlockModel(True)
         #define view
         batch = graphics.Batch()
         canvas = pyglet_window.Canvas(batch, 200, 200)
