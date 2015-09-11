@@ -1,6 +1,8 @@
 __author__ = 'Graham Voysey'
-import pyglet
 import logging
+
+import pyglet
+import core.event
 
 class PygletWindow(pyglet.window.Window):
     def __init__(self, signal, fullscreen=False, show_fps=True, vsync=False):
@@ -142,6 +144,8 @@ class Command(object):
 
 
 class PygletKeyboardCommand(Command):
+
+    press_event = core.event.Event('keyboard event')
     def __init__(self, symbol, modifiers):
         super(PygletKeyboardCommand, self).__init__()
         self.stop = False

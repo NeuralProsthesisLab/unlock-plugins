@@ -7,8 +7,9 @@ from plugins.apps.appplugin import AppPlugin
 from plugins.plugin_one.testplugin import TestPlugin
 from plugins.decoders.decoderplugin import DecoderPlugin
 
+
 ##turn on to see yapsy plugin registration messages
-#logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(level=logging.DEBUG)
 
 
 def main():
@@ -16,7 +17,7 @@ def main():
     manager = ConfigurePluginManager()
 
     # Load the Test Plugin
-    manager = ActivatePlugins(manager,["Test", "App"])
+    manager = ActivatePlugins(manager, ["Test", "App"])
 
     # load at least one app, one decoder, and one driver.
     # defaults: app - hello-world or dashboard (todo: when written)
@@ -28,7 +29,7 @@ def main():
     #    manager.activatePluginByName("HelloWorld","App")
     # if(AreDecodersConfigured() is False):
     #    manager.activatePluginByName("keyboard", "Decoder")
-    logging.log(logging.INFO,"unlock exiting ...")
+    logging.log(logging.INFO, "unlock exiting ...")
 
 
 def ConfigurePluginManager(categories=None, pluginLocation=None):
@@ -65,6 +66,7 @@ def ActivatePlugins(manager, categories=None):
                     plugin.plugin_object.start()
 
         return manager
+
 
 def AreAppsConfigured():
     """
