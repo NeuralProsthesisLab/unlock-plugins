@@ -2,15 +2,18 @@ __author__ = 'Graham Voysey'
 import logging
 
 import pyglet
-import core.event
+import core.event as event
 
 class PygletWindow(pyglet.window.Window):
+    key_event = event.Event()
+
     def __init__(self, signal, fullscreen=False, show_fps=True, vsync=False):
         super(PygletWindow, self).__init__(fullscreen=fullscreen, vsync=vsync)
         self.signal = signal
         self.controller_stack = []
         self.views = []
         self.batches = set([])
+
         if show_fps:
             self.fps = pyglet.clock.ClockDisplay().draw
         else:
@@ -23,6 +26,7 @@ class PygletWindow(pyglet.window.Window):
         @self.event
         def on_key_press(symbol, modifiers):
             command = PygletKeyboardCommand(symbol, modifiers)
+            self.key_event()
             if command.stop:
                 return self.handle_stop_request()
             if self.active_controller and (command.decision or command.selection):
@@ -105,6 +109,8 @@ class Canvas(object):
 
 
 class Command(object):
+
+
     def __init__(self, delta=None, decision=None, selection=None, data=None, json=False):
         super(Command, self).__init__()
         self.delta = delta
@@ -126,26 +132,26 @@ class Command(object):
     def is_ready(self):
         return self.ready
 
-    @staticmethod
-    def serialize(command):
-        if command.json:
-            ret = json.dumps(command)
-        else:
-            ret = pickle.dumps(command)
-        return ret
-
-    @staticmethod
-    def deserialize(serialized_command, json=False):
-        if json:
-            ret = json.loads(serialized_command)
-        else:
-            ret = pickle.loads(serialized_command)
-        return ret
+    # @staticmethod
+    # def serialize(command):
+    #     if command.json:
+    #         ret = json.dumps(command)
+    #     else:
+    #         ret = pickle.dumps(command)
+    #     return ret
+    #
+    # @staticmethod
+    # def deserialize(serialized_command, json=False):
+    #     if json:
+    #         ret = json.loads(serialized_command)
+    #     else:
+    #         ret = pickle.loads(serialized_command)
+    #     return ret
 
 
 class PygletKeyboardCommand(Command):
 
-    press_event = core.event.Event('keyboard event')
+
     def __init__(self, symbol, modifiers):
         super(PygletKeyboardCommand, self).__init__()
         self.stop = False
@@ -169,3 +175,5 @@ class PygletKeyboardCommand(Command):
             self.stop = True
         elif symbol in labels:
             self.decision = labels.index(symbol) + 1
+
+
