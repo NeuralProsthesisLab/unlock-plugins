@@ -22,16 +22,16 @@ if __name__ == "__main__":
 
     window = PygletWindow(manager)
 
-    for plugin in manager.getPluginsOfCategory('DAQ'):
-        manager.activatePluginByName(plugin.name)
-        plugin.plugin_object.open()
-        plugin.plugin_object.init()
-
-    for plugin in manager.getPluginsOfCategory('Decoder'):
-        manager.activatePluginByName(plugin.name)
+    # for plugin in manager.getPluginsOfCategory('DAQ'):
+    #     manager.activatePluginByName(plugin.name)
+    #     plugin.plugin_object.open()
+    #     plugin.plugin_object.init()
+    #
+    # for plugin in manager.getPluginsOfCategory('Decoder'):
+    #     manager.activatePluginByName(plugin.name)
 
     for plugin in manager.getPluginsOfCategory('App'):
         manager.activatePluginByName(plugin.name)
-        plugin.plugin_object.register()
+        plugin.plugin_object.register(window)
 
     window.start()

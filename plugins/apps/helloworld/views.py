@@ -11,6 +11,12 @@ from core import UnlockView
 
 
 class HelloWorldView(UnlockView):
-    def __init__(self):
-        super(HelloWorldView, self).__init__()
-        self.label = self.drawText("Hello World!", 0, 0, None)
+    def __init__(self, canvas, model):
+        super(HelloWorldView, self).__init__(canvas, model)
+        self.label = self.create_label("Hello World!")
+
+    def render(self):
+        if self.model.is_dirty():
+            self.label.x = self.canvas.width*self.model.text_position[0]
+            self.label.y = self.canvas.height*self.model.text_position[1]
+            self.label.color = self.model.text_color

@@ -54,14 +54,15 @@ class PygletWindow(pyglet.window.Window):
         if self.active_controller:
             stop = self.active_controller.deactivate()
             if stop:
-                self.signal.stop()
-                self.signal.close()
+                # self.signal.stop()
+                # self.signal.close()
                 pyglet.app.exit()
             return pyglet.event.EVENT_HANDLED
         else:
             if self.signal is not None:
-                self.signal.stop()
-                self.signal.close()
+                pass
+                # self.signal.stop()
+                # self.signal.close()
             pyglet.app.exit()
 
     def activate_controller(self, controller):
@@ -89,6 +90,13 @@ class PygletWindow(pyglet.window.Window):
     def start(self):
         pyglet.app.run()
 
+    def get_app_canvas(self, size=None, offset=(0, 0)):
+        batch = pyglet.graphics.Batch()
+        self.batches.add(batch)
+        if size is None:
+            size = self.width, self.height
+        return Canvas(batch, size[0], size[1], offset[0], offset[1])
+
 
 class Canvas(object):
     def __init__(self, batch, width, height, xoffset=0, yoffset=0):
@@ -99,13 +107,9 @@ class Canvas(object):
         self.y = yoffset
 
     def center(self):
-        return self.xcenter(), self.ycenter()
-
-    def xcenter(self):
-        return self.width / 2 + self.x
-
-    def ycenter(self):
-        return self.height / 2 + self.y
+        xc = self.width / 2 + self.x
+        yc = self.height / 2 + self.y
+        return xc, yc
 
 
 class Command(object):

@@ -1,43 +1,23 @@
-__author__ = 'Graham Voysey'
 from plugins.apps.appplugin import AppPlugin
-from pyglet import graphics
-from core import pyglet_window, unlockmodels, pyglet_text
 
-import logging
+from plugins.apps.helloworld.models import HelloWorldModel
+from plugins.apps.helloworld.views import HelloWorldView
 
 
 class HelloWorld(AppPlugin):
-    def __init__(self):
-        self.isConfigured = False
-        self.window = None
-        self.model = None
+    def register(self, window):
+        model = HelloWorldModel()
 
-    def configure(self):
+        canvas = window.get_app_canvas()
+        view = HelloWorldView(canvas, model)
 
+        self.models.append(model)
+        self.views.append(view)
 
-        # define model
-        self.model = unlockmodels.UnlockModel(True)
+        window.views = self.views
 
-        # define view
-        batch = graphics.Batch()
-        canvas = pyglet_window.Canvas(batch, 200, 200)
-        # define controller
-        self.window = pyglet_window.PygletWindow(signal=None, fullscreen=False)
-        self.window.key_event += self.update
-        appview = pyglet_text.PygletTextLabel(self.model, canvas, 'Hello, world',
-                                              x=self.window.width // 2,
-                                              y=self.window.height // 2,
-                                              )
-        # assemble state chain
+    def activate(self):
+        pass
 
-        self.window.views.append(appview)
-        self.isConfigured = True
-
-    def start(self):
-        assert self.isConfigured
-        # sandbox; just do all the app creation here for now.
-        self.window.start()
-        logging.log(logging.INFO, "Hello World execution complete ...")
-
-    def update(self,sender,earg):
-        print("got hit!")
+    def deactivate(self):
+        pass

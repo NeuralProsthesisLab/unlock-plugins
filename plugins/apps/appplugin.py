@@ -1,23 +1,32 @@
-__author__ = 'Graham Voysey'
 from yapsy.IPlugin import IPlugin
+
 
 class AppPlugin(IPlugin):
     """
-    Apps consume commands (up, down, left, right) and selections (yes/no) to perform basically arbitrary actions on a pyglet window.
+    An App is a plugin that contains at least one model, view, and controller
+    class. The app entry point receives a reference to the pyglet window and
+    event loop that handles the lifecycle of all applications.
     """
-    def start(self):
-        return NotImplementedError
+    def __init__(self):
+        super(AppPlugin, self).__init__()
+        self.models = []
+        self.views = []
 
-    def configure(self):
-        return NotImplementedError
+    def activate(self):
+        """
+        Called by the plugin manager when activating the plugin
+        """
+        pass
 
-    def update(self, command):
-        #process command (state)
-        return NotImplementedError
+    def deactivate(self):
+        """
+        Called by the plugin manager when deactivating the plugin
+        """
+        pass
 
-    def render(self):
-        #in the view (?)
-        return NotImplementedError
-
-    def stop(self):
+    def register(self, window):
+        """
+        The register method is where the models and views should be
+        instantiated.
+        """
         return NotImplementedError
