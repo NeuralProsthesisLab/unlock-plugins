@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 from yapsy.IPlugin import IPlugin
 
 
@@ -11,6 +13,7 @@ class AppPlugin(IPlugin):
         super(AppPlugin, self).__init__()
         self.models = []
         self.views = []
+        self.canvases = []
 
     def activate(self):
         """
