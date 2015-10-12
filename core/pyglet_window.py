@@ -1,36 +1,33 @@
-__author__ = 'Graham Voysey'
 import logging
 
 import pyglet
+
 import core.event as event
+
 
 class PygletWindow(pyglet.window.Window):
     key_event = event.Event()
 
-    def __init__(self, signal, fullscreen=False, show_fps=True, vsync=False):
+    def __init__(self, plugin_manager, fullscreen=False, show_fps=True,
+                 vsync=False):
         super(PygletWindow, self).__init__(fullscreen=fullscreen, vsync=vsync)
-        self.signal = signal
-        self.controller_stack = []
-        self.views = []
-        self.batches = set([])
+        self.plugin_manager = plugin_manager
+        self.active_apps = set([])
 
+        self.fps = lambda *args: None
         if show_fps:
             self.fps = pyglet.clock.ClockDisplay().draw
-        else:
-            def empty():
-                pass
 
-            self.fps = empty
-        self.active_controller = None
+        self._initialize_plugins()
 
         @self.event
         def on_key_press(symbol, modifiers):
             command = PygletKeyboardCommand(symbol, modifiers)
-            self.key_event()
+            # self.key_event()
             if command.stop:
                 return self.handle_stop_request()
-            if self.active_controller and (command.decision or command.selection):
-                self.active_controller.keyboard_input(command)
+            # if self.active_controller and (command.decision or command.selection):
+            #     self.active_controller.keyboard_input(command)
 
         @self.event
         def on_close():
@@ -40,59 +37,71 @@ class PygletWindow(pyglet.window.Window):
         def on_draw():
             self.render()
 
-
     def render(self):
         self.clear()
-        for batch in self.batches:
-            if batch:
-                batch.draw()
-        for view in self.views:
-            view.render()
+        for app in self.active_apps:
+            for canvas in app.canvases:
+                canvas.batch.draw()
+            for view in app.views:
+                view.render()
         self.fps()
 
+    def _initialize_plugins(self):
+        # for plugin in manager.getPluginsOfCategory('DAQ'):
+        #     manager.activatePluginByName(plugin.name)
+        #     plugin.plugin_object.open()
+        #     plugin.plugin_object.init()
+        #
+        # for plugin in manager.getPluginsOfCategory('Decoder'):
+        #     manager.activatePluginByName(plugin.name)
+
+        for plugin in self.plugin_manager.getPluginsOfCategory('App'):
+            # manager.activatePluginByName(plugin.name)
+            plugin.plugin_object.register(self)
+
     def handle_stop_request(self):
-        if self.active_controller:
-            stop = self.active_controller.deactivate()
-            if stop:
-                # self.signal.stop()
-                # self.signal.close()
-                pyglet.app.exit()
-            return pyglet.event.EVENT_HANDLED
-        else:
-            if self.signal is not None:
-                pass
-                # self.signal.stop()
-                # self.signal.close()
-            pyglet.app.exit()
+        for plugin in self.plugin_manager.getPluginsOfCategory('App'):
+            self.plugin_manager.deactivatePluginByName(plugin.name)
+        pyglet.app.exit()
 
-    def activate_controller(self, controller):
-        if self.active_controller:
-            self.controller_stack.append(self.active_controller)
-            pyglet.clock.unschedule(self.active_controller.poll_signal)
+    def activate_app(self, app_name):
+        app = self.plugin_manager.getPluginByName(app_name, 'App')
+        if app is not None:
+            self.active_apps.add(app.plugin_object)
 
-        self.views = controller.views
-        self.batches = controller.batches
-        pyglet.clock.schedule(controller.poll_signal)  # , controller.poll_signal_frequency)
-        self.active_controller = controller
+    def deactivate_app(self, app_name):
+        app = self.plugin_manager.getPluginByName(app_name, 'App')
+        if app is not None:
+            self.active_apps.remove(app.plugin_object)
 
-    def deactivate_controller(self):
-        if self.active_controller:
-            self.views = []
-            self.batches = set([])
-            pyglet.clock.unschedule(self.active_controller.poll_signal)
-            self.active_controller = None
+    # def activate_controller(self, controller):
+    #     if self.active_controller:
+    #         self.controller_stack.append(self.active_controller)
+    #         pyglet.clock.unschedule(self.active_controller.poll_signal)
+    #
+    #     self.views = controller.views
+    #     self.batches = controller.batches
+    #     pyglet.clock.schedule(controller.poll_signal)  # , controller.poll_signal_frequency)
+    #     self.active_controller = controller
+    #
+    # def deactivate_controller(self):
+    #     if self.active_controller:
+    #         self.views = []
+    #         self.batches = set([])
+    #         pyglet.clock.unschedule(self.active_controller.poll_signal)
+    #         self.active_controller = None
+    #
+    #     if len(self.controller_stack) > 0:
+    #         controller = self.controller_stack[-1]
+    #         controller.activate()
+    #         self.controller_stack = self.controller_stack[:-1]
 
-        if len(self.controller_stack) > 0:
-            controller = self.controller_stack[-1]
-            controller.activate()
-            self.controller_stack = self.controller_stack[:-1]
-
-    def start(self):
+    def start_with(self, app_name):
+        self.activate_app(app_name)
         pyglet.app.run()
 
     def get_app_canvas(self, size=None, offset=(0, 0)):
         batch = pyglet.graphics.Batch()
-        self.batches.add(batch)
         if size is None:
             size = self.width, self.height
         return Canvas(batch, size[0], size[1], offset[0], offset[1])
