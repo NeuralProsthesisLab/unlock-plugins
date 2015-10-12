@@ -30,11 +30,12 @@ class UnlockModel(object):
         self._dirty = True
 
     def __setattr__(self, name, value):
-        try:
-            if getattr(self, name) != value:
-                self._dirty = True
-        except AttributeError:
-            pass
+        if name != '_dirty':
+            try:
+                if getattr(self, name) != value:
+                    self._dirty = True
+            except AttributeError:
+                pass
         object.__setattr__(self, name, value)
 
     def is_dirty(self):
