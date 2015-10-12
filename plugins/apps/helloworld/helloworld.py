@@ -7,17 +7,9 @@ from plugins.apps.helloworld.views import HelloWorldView
 class HelloWorld(AppPlugin):
     def register(self, window):
         model = HelloWorldModel()
-
         canvas = window.get_app_canvas()
         view = HelloWorldView(canvas, model)
 
         self.models.append(model)
+        self.canvases.append(canvas)
         self.views.append(view)
-
-        window.views = self.views
-
-    def activate(self):
-        pass
-
-    def deactivate(self):
-        pass
