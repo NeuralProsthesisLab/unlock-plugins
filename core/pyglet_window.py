@@ -26,6 +26,8 @@ class PygletWindow(pyglet.window.Window):
             # self.key_event()
             if command.stop:
                 return self.handle_stop_request()
+            for app in self.active_apps:
+                app.process_command(command)
             # if self.active_controller and (command.decision or command.selection):
             #     self.active_controller.keyboard_input(command)
 
@@ -122,8 +124,6 @@ class Canvas(object):
 
 
 class Command(object):
-
-
     def __init__(self, delta=None, decision=None, selection=None, data=None, json=False):
         super(Command, self).__init__()
         self.delta = delta
@@ -163,15 +163,13 @@ class Command(object):
 
 
 class PygletKeyboardCommand(Command):
-
-
     def __init__(self, symbol, modifiers):
         super(PygletKeyboardCommand, self).__init__()
         self.stop = False
         labels = [ord(c) for c in 'abcdefghijklmnopqrstuvwxyz_12345']
         if symbol == pyglet.window.key.UP:
             self.decision = 1
-            logging.log(logging.INFO,'Received UP key press')
+            logging.log(logging.INFO, 'Received UP key press')
         elif symbol == pyglet.window.key.DOWN:
             self.decision = 2
             logging.log(logging.INFO, 'Received DOWN key press')

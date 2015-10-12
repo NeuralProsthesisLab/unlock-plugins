@@ -33,3 +33,6 @@ class AppPlugin(IPlugin):
         instantiated.
         """
         return NotImplementedError
+
+    def process_command(self, command):
+        pass

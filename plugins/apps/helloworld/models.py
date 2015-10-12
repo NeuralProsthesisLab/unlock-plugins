@@ -15,3 +15,13 @@ class HelloWorldModel(UnlockModel):
         super(HelloWorldModel, self).__init__()
         self.text_position = (0.5, 0.5)
         self.text_color = (255, 255, 255, 255)
+
+    def on_decision(self, decision):
+        if decision == 1:
+            self.text_position = (0.5, 0.75)
+        elif decision == 2:
+            self.text_position = (0.5, 0.25)
+        elif decision == 3:
+            self.text_position = (0.25, 0.5)
+        elif decision == 4:
+            self.text_position = (0.75, 0.5)
