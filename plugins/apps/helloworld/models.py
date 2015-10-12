@@ -7,7 +7,13 @@ screen. Arrow key presses will move the text in the corresponding direction
 one space only i.e. the text can take one of 5 positions: up, down, left, right,
 and center. A space bar press will randomly change the color of the text.
 """
+from functools import partial
+from random import randint
+
 from core import UnlockModel
+
+
+rand8bit = partial(randint, 0, 255)
 
 
 class HelloWorldModel(UnlockModel):
@@ -25,3 +31,6 @@ class HelloWorldModel(UnlockModel):
             self.text_position = (0.25, 0.5)
         elif decision == 4:
             self.text_position = (0.75, 0.5)
+
+    def on_selection(self):
+        self.text_color = (rand8bit(), rand8bit(), rand8bit(), 255)

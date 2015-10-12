@@ -35,4 +35,9 @@ class AppPlugin(IPlugin):
         return NotImplementedError
 
     def process_command(self, command):
-        pass
+        if command.decision is not None:
+            for model in self.models:
+                model.on_decision(command.decision)
+        if command.selection is not None:
+            for model in self.models:
+                model.on_selection()

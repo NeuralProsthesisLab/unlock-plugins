@@ -14,7 +14,3 @@ class HelloWorld(AppPlugin):
         self.canvases.append(canvas)
         self.views.append(view)
 
-    def process_command(self, command):
-        if command.decision is not None:
-            for model in self.models:
-                model.on_decision(command.decision)
