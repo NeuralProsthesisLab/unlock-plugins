@@ -1,61 +1,34 @@
-__author__ = 'Graham Voysey'
-
-from yapsy.IPlugin import IPlugin
 import logging
 
-logging.getLogger('yaspy').setLevel(logging.DEBUG)
+from yapsy.IPlugin import IPlugin
 
 
 class DAQPlugin(IPlugin):
     """
-    DAQ plugins consume raw information from a DAQ card (enobio, mobilab, any LSL device, tobii eye tracker, etc.)
-    and emit processed data (as a numpy array, probably) to a decoder.
+    DAQ plugins consume raw information from a DAQ card (enobio, mobilab, any
+    LSL device, tobii eye tracker, etc.) and emit processed data (as a numpy
+    array, probably) to a decoder.
     """
+    def activate(self):
+        self.open()
 
+    def deactivate(self):
+        self.close()
 
-    def __init__(self, *params):
+    def open(self):
+        print('open')
+
+    def close(self):
         pass
 
     def start(self):
-        """
-
-        :return:
-        """
-        return NotImplementedError
+        pass
 
     def stop(self):
-        """
+        pass
 
-        :return:
-        """
-        return NotImplementedError
-
-    def init(self):
-        """
-
-        :return:
-        """
-        return NotImplementedError
-
-    def open(self, address):
-        """
-
-        :param address:
-        :return:
-        """
-        return NotImplementedError
-
-    def close(self):
-        """
-
-        :return:
-        """
-        return NotImplementedError
+    def acquire(self):
+        pass
 
     def get_data(self, samples):
-        """
-
-        :param samples:
-        :return:
-        """
-        return NotImplementedError
+        pass

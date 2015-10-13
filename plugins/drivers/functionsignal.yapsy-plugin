@@ -1,0 +1,9 @@
+[Core]
+Name = Function Generator
+Module = functionsignal
+
+
+[Documentation]
+Author = Byron Galbraith
+Version = 0.1
+Description = Function generator signal source
