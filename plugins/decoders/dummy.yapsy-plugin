@@ -1,0 +1,9 @@
+[Core]
+Name = Dummy Decoder
+Module = dummy
+
+
+[Documentation]
+Author = Byron Galbraith
+Version = 0.1
+Description = Decoder passes set decision and selection values through
