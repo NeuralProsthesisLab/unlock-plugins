@@ -13,12 +13,15 @@ class PygletWindow(pyglet.window.Window):
         super(PygletWindow, self).__init__(fullscreen=fullscreen, vsync=vsync)
         self.plugin_manager = plugin_manager
         self.active_apps = set([])
+        self.active_decoders = set([])
+        self.active_daqs = set([])
 
         self.fps = lambda *args: None
         if show_fps:
             self.fps = pyglet.clock.ClockDisplay().draw
 
         self._initialize_plugins()
+        pyglet.clock.schedule(self.poll_and_decode)
 
         @self.event
         def on_key_press(symbol, modifiers):
@@ -48,21 +51,33 @@ class PygletWindow(pyglet.window.Window):
                 view.render()
         self.fps()
 
+    def poll_and_decode(self, dt):
+        for daq in self.active_daqs:
+            samples = daq.get_data(1)
+            for decoder in self.active_decoders:
+                command = decoder.process_data(samples)
+                for app in self.active_apps:
+                    app.process_command(command)
+
     def _initialize_plugins(self):
-        # for plugin in manager.getPluginsOfCategory('DAQ'):
-        #     manager.activatePluginByName(plugin.name)
-        #     plugin.plugin_object.open()
-        #     plugin.plugin_object.init()
-        #
-        # for plugin in manager.getPluginsOfCategory('Decoder'):
-        #     manager.activatePluginByName(plugin.name)
+        daq = self.plugin_manager.activatePluginByName('Function Generator',
+                                                       'DAQ')
+        if daq is not None:
+            self.active_daqs.add(daq)
+
+        for plugin in self.plugin_manager.getPluginsOfCategory('Decoder'):
+            decoder = self.plugin_manager.activatePluginByName(plugin.name,
+                                                               'Decoder')
+            if decoder is not None:
+                self.active_decoders.add(decoder)
 
         for plugin in self.plugin_manager.getPluginsOfCategory('App'):
-            # manager.activatePluginByName(plugin.name)
             plugin.plugin_object.register(self)
 
     def handle_stop_request(self):
         for plugin in self.plugin_manager.getPluginsOfCategory('App'):
+            self.plugin_manager.deactivatePluginByName(plugin.name)
+        for plugin in self.plugin_manager.getPluginsOfCategory('DAQ'):
             self.plugin_manager.deactivatePluginByName(plugin.name)
         pyglet.app.exit()
 
