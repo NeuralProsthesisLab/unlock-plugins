@@ -16,7 +16,7 @@ class DAQPlugin(IPlugin):
         self.close()
 
     def open(self):
-        print('open')
+        pass
 
     def close(self):
         pass
