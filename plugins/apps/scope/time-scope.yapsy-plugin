@@ -1,0 +1,9 @@
+[Core]
+Name = Time Scope
+Module = time_scope
+
+
+[Documentation]
+Author = Byron Galbraith
+Version = 0.1
+Description = Time scope for raw DAQ signal
