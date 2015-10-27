@@ -41,3 +41,6 @@ class AppPlugin(IPlugin):
         if command.selection is not None:
             for model in self.models:
                 model.on_selection()
+        if command.data is not None:
+            for model in self.models:
+                model.on_data(command.data)

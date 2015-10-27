@@ -16,9 +16,12 @@ if __name__ == "__main__":
     manager = PluginManager()
     manager.setPluginPlaces(['plugins'])
     manager.setCategoriesFilter({'DAQ': DAQPlugin,
-                                 'App': AppPlugin,
-                                 'Decoder': DecoderPlugin})
+                                 'Decoder': DecoderPlugin,
+                                 'App': AppPlugin})
     manager.collectPlugins()
 
     window = PygletWindow(manager)
-    window.start_with('Hello World')
+    conf = {'DAQ': 'Function Generator',
+            'Decoder': 'Dummy Decoder',
+            'App': 'Time Scope'}
+    window.start_with(conf)

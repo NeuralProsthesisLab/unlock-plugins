@@ -14,13 +14,12 @@ class PygletWindow(pyglet.window.Window):
         self.plugin_manager = plugin_manager
         self.active_apps = set([])
         self.active_decoders = set([])
-        self.active_daqs = set([])
+        self.active_daq = None
 
         self.fps = lambda *args: None
         if show_fps:
             self.fps = pyglet.clock.ClockDisplay().draw
 
-        self._initialize_plugins()
         pyglet.clock.schedule(self.poll_and_decode)
 
         @self.event
@@ -52,27 +51,31 @@ class PygletWindow(pyglet.window.Window):
         self.fps()
 
     def poll_and_decode(self, dt):
-        for daq in self.active_daqs:
-            samples = daq.get_data(1)
-            for decoder in self.active_decoders:
-                command = decoder.process_data(samples)
-                for app in self.active_apps:
-                    app.process_command(command)
+        samples = self.active_daq.get_data(1)
+        for decoder in self.active_decoders:
+            command = decoder.process_data(samples)
+            for app in self.active_apps:
+                app.process_command(command)
 
-    def _initialize_plugins(self):
-        daq = self.plugin_manager.activatePluginByName('Function Generator',
-                                                       'DAQ')
-        if daq is not None:
-            self.active_daqs.add(daq)
+    def _initialize_plugins(self, conf):
+        if conf['DAQ'] is not None:
+            daq = self.plugin_manager.activatePluginByName(conf['DAQ'], 'DAQ')
+            if daq is not None:
+                self.active_daq = daq
 
-        for plugin in self.plugin_manager.getPluginsOfCategory('Decoder'):
-            decoder = self.plugin_manager.activatePluginByName(plugin.name,
+        if conf['Decoder'] is not None:
+            decoder = self.plugin_manager.activatePluginByName(conf['Decoder'],
                                                                'Decoder')
             if decoder is not None:
                 self.active_decoders.add(decoder)
 
-        for plugin in self.plugin_manager.getPluginsOfCategory('App'):
-            plugin.plugin_object.register(self)
+        if conf['App'] is not None:
+            app = self.plugin_manager.activatePluginByName(conf['App'], 'App')
+            if app is not None:
+                app.register(self)
+                self.active_apps.add(app)
+            # for plugin in self.plugin_manager.getPluginsOfCategory('App'):
+            #     plugin.plugin_object.register(self)
 
     def handle_stop_request(self):
         for plugin in self.plugin_manager.getPluginsOfCategory('App'):
@@ -113,8 +116,8 @@ class PygletWindow(pyglet.window.Window):
     #         controller.activate()
     #         self.controller_stack = self.controller_stack[:-1]
 
-    def start_with(self, app_name):
-        self.activate_app(app_name)
+    def start_with(self, conf):
+        self._initialize_plugins(conf)
         pyglet.app.run()
 
     def get_app_canvas(self, size=None, offset=(0, 0)):
