@@ -25,9 +25,15 @@ class TimeScopeModel(UnlockModel):
         """
         :param data: (n_channels, n_samples)
         """
+        if len(data) == 0 or data.shape[1] > self.n_samples:
+            return
+
         s = data.shape[1]
         idx = np.arange(self.cursor, self.cursor+s) % self.n_samples
-        self.traces[:, idx] = data
+        try:
+            self.traces[:, idx] = data
+        except:
+            print(data.shape)
         last_cursor = self.cursor
         self.cursor = (self.cursor + s) % self.n_samples
 

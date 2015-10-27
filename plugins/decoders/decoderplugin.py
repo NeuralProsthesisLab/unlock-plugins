@@ -8,3 +8,8 @@ class DecoderPlugin(IPlugin):
     """
     def process_data(self, data):
         return NotImplementedError
+
+    #preprocess -- signal filtering, buffering
+    #feature extraction  -- analysis.
+    #classification -- what class do these features suggest
+    #translation -- threshhold, what to do with classes.

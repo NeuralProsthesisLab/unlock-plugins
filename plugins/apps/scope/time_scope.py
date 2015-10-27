@@ -6,7 +6,7 @@ from plugins.apps.scope.views import TimeScopeView
 
 class TimeScope(AppPlugin):
     def register(self, window):
-        model = TimeScopeModel(4, 100)
+        model = TimeScopeModel(4, 500)
         canvas = window.get_app_canvas()
         view = TimeScopeView(canvas, model)
 

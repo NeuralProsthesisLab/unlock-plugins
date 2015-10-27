@@ -21,7 +21,7 @@ if __name__ == "__main__":
     manager.collectPlugins()
 
     window = PygletWindow(manager)
-    conf = {'DAQ': 'Function Generator',
+    conf = {'DAQ': 'Lab Streaming Layer',
             'Decoder': None,  # 'Dummy Decoder',
             'App': 'Time Scope'}
     window.start_with(conf)

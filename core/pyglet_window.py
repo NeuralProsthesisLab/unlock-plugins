@@ -51,7 +51,7 @@ class PygletWindow(pyglet.window.Window):
         self.fps()
 
     def poll_and_decode(self, dt):
-        samples = self.active_daq.get_data(1)
+        samples = self.active_daq.get_data()
         command = Command(data=samples)
         for decoder in self.active_decoders:
             command = decoder.process_data(command)
