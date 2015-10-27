@@ -52,10 +52,11 @@ class PygletWindow(pyglet.window.Window):
 
     def poll_and_decode(self, dt):
         samples = self.active_daq.get_data(1)
+        command = Command(data=samples)
         for decoder in self.active_decoders:
-            command = decoder.process_data(samples)
-            for app in self.active_apps:
-                app.process_command(command)
+            command = decoder.process_data(command)
+        for app in self.active_apps:
+            app.process_command(command)
 
     def _initialize_plugins(self, conf):
         if conf['DAQ'] is not None:
@@ -74,8 +75,6 @@ class PygletWindow(pyglet.window.Window):
             if app is not None:
                 app.register(self)
                 self.active_apps.add(app)
-            # for plugin in self.plugin_manager.getPluginsOfCategory('App'):
-            #     plugin.plugin_object.register(self)
 
     def handle_stop_request(self):
         for plugin in self.plugin_manager.getPluginsOfCategory('App'):
@@ -93,28 +92,6 @@ class PygletWindow(pyglet.window.Window):
         app = self.plugin_manager.getPluginByName(app_name, 'App')
         if app is not None:
             self.active_apps.remove(app.plugin_object)
-
-    # def activate_controller(self, controller):
-    #     if self.active_controller:
-    #         self.controller_stack.append(self.active_controller)
-    #         pyglet.clock.unschedule(self.active_controller.poll_signal)
-    #
-    #     self.views = controller.views
-    #     self.batches = controller.batches
-    #     pyglet.clock.schedule(controller.poll_signal)  # , controller.poll_signal_frequency)
-    #     self.active_controller = controller
-    #
-    # def deactivate_controller(self):
-    #     if self.active_controller:
-    #         self.views = []
-    #         self.batches = set([])
-    #         pyglet.clock.unschedule(self.active_controller.poll_signal)
-    #         self.active_controller = None
-    #
-    #     if len(self.controller_stack) > 0:
-    #         controller = self.controller_stack[-1]
-    #         controller.activate()
-    #         self.controller_stack = self.controller_stack[:-1]
 
     def start_with(self, conf):
         self._initialize_plugins(conf)
