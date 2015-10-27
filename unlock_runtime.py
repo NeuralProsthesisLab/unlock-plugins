@@ -22,6 +22,6 @@ if __name__ == "__main__":
 
     window = PygletWindow(manager)
     conf = {'DAQ': 'Function Generator',
-            'Decoder': 'Dummy Decoder',
+            'Decoder': None,  # 'Dummy Decoder',
             'App': 'Time Scope'}
     window.start_with(conf)
