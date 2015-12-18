@@ -1,0 +1,9 @@
+[Core]
+Name = RealTime Synthesizer
+Module = rtsynth
+
+
+[Documentation]
+Author = Byron Galbraith
+Version = 0.1
+Description = Frank's Phonemic Synthesizer
