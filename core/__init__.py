@@ -18,7 +18,19 @@ class UnlockView(object):
         return pyglet.text.Label(text, x=cx, y=cy, color=(255, 255, 255, 255),
                                  font_size=48, font_name="Helvetica",
                                  anchor_x='center', anchor_y='center',
-                                 batch=self.canvas.batch)
+                                 batch=self.canvas.batch,
+                                 group=self.canvas.foreground)
+
+    def create_sprite(self, filename, background=False):
+        cx, cy = self.canvas.center()
+        image = pyglet.image.load(filename)
+        image.anchor_x = int(image.width/2)
+        image.anchor_y = int(image.height/2)
+        group = self.canvas.background if background else self.canvas.foreground
+        sprite = pyglet.sprite.Sprite(image, cx, cy, batch=self.canvas.batch,
+                                      group=group)
+        # sprite.scale = 0.66
+        return sprite
 
     def draw_line(self, p1, p2, color=(255, 255, 255), group=None):
         return self.canvas.batch.add(2, pyglet.gl.GL_LINES, group,
