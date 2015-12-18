@@ -9,8 +9,11 @@ class PygletWindow(pyglet.window.Window):
     key_event = event.Event()
 
     def __init__(self, plugin_manager, fullscreen=False, show_fps=True,
-                 vsync=False):
-        super(PygletWindow, self).__init__(fullscreen=fullscreen, vsync=vsync)
+                 vsync=False, width=800, height=600):
+        super(PygletWindow, self).__init__(fullscreen=fullscreen, vsync=vsync,
+                                           width=width, height=height)
+        self.set_mouse_visible(False)
+        self.set_exclusive_mouse(True)
         self.plugin_manager = plugin_manager
         self.active_apps = set([])
         self.active_decoders = set([])
@@ -34,6 +37,13 @@ class PygletWindow(pyglet.window.Window):
             #     self.active_controller.keyboard_input(command)
 
         @self.event
+        def on_mouse_motion(x, y, dx, dy):
+            command = Command()
+            command.decision = (dx / self.width, dy / self.height)
+            for app in self.active_apps:
+                app.process_command(command)
+
+        @self.event
         def on_close():
             pass
 
@@ -51,7 +61,7 @@ class PygletWindow(pyglet.window.Window):
         self.fps()
 
     def poll_and_decode(self, dt):
-        samples = self.active_daq.get_data()
+        samples = self.active_daq.get_data(1)
         command = Command(data=samples)
         for decoder in self.active_decoders:
             command = decoder.process_data(command)
@@ -99,14 +109,20 @@ class PygletWindow(pyglet.window.Window):
 
     def get_app_canvas(self, size=None, offset=(0, 0)):
         batch = pyglet.graphics.Batch()
+        background = pyglet.graphics.OrderedGroup(0)
+        foreground = pyglet.graphics.OrderedGroup(1)
         if size is None:
             size = self.width, self.height
-        return Canvas(batch, size[0], size[1], offset[0], offset[1])
+        return Canvas(batch, background, foreground, size[0], size[1],
+                      offset[0], offset[1])
 
 
 class Canvas(object):
-    def __init__(self, batch, width, height, xoffset=0, yoffset=0):
+    def __init__(self, batch, background, foreground, width, height,
+                 xoffset=0, yoffset=0):
         self.batch = batch
+        self.background = background
+        self.foreground = foreground
         self.width = width
         self.height = height
         self.x = xoffset
@@ -181,5 +197,3 @@ class PygletKeyboardCommand(Command):
             self.stop = True
         elif symbol in labels:
             self.decision = labels.index(symbol) + 1
-
-
