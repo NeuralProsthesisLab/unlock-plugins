@@ -9,11 +9,9 @@ class PygletWindow(pyglet.window.Window):
     key_event = event.Event()
 
     def __init__(self, plugin_manager, fullscreen=False, show_fps=True,
-                 vsync=False, width=800, height=600):
+                 vsync=False, width=None, height=None):
         super(PygletWindow, self).__init__(fullscreen=fullscreen, vsync=vsync,
                                            width=width, height=height)
-        self.set_mouse_visible(False)
-        self.set_exclusive_mouse(True)
         self.plugin_manager = plugin_manager
         self.active_apps = set([])
         self.active_decoders = set([])
@@ -22,6 +20,9 @@ class PygletWindow(pyglet.window.Window):
         self.fps = lambda *args: None
         if show_fps:
             self.fps = pyglet.clock.ClockDisplay().draw
+
+        self.set_exclusive_mouse(True)
+        self.set_mouse_visible(False)
 
         pyglet.clock.schedule(self.poll_and_decode)
 
